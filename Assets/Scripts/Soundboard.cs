@@ -18,6 +18,14 @@ public class Soundboard : MonoBehaviour {
     public AudioClip[] items;
 
 
+    public int gridCols = 3;
+    public int gridRows = 4;
+
+    public GameObject mainPanel;
+    public GameObject prefabRow;
+    public GameObject prefabPlayBtn;
+
+
 	void Start () {
         instance = this;
 	}
@@ -25,6 +33,37 @@ public class Soundboard : MonoBehaviour {
     void Awake()
     {
         _audio = GetComponent<AudioSource>();
+
+
+        int clipIndex = 0;
+
+        for (int row = 0; row < gridRows; row++)
+        {
+            //init new vert layout panel
+            GameObject panelRow = Instantiate(prefabRow);
+            panelRow.transform.SetParent(mainPanel.transform,false);
+
+            for (int col = 0; col < gridCols; col++)
+            {
+                //init new button in panel
+
+                Debug.Log(string.Format("btn {0}x{1}", col, row));
+
+                GameObject playBtn = Instantiate(prefabPlayBtn);
+                playBtn.transform.SetParent(panelRow.transform, false);
+
+                AudioClip clip = items[clipIndex];
+
+                playBtn.GetComponent<ButtonPlayer>().setClip(clip,clip.name);
+
+
+                clipIndex++;
+            }
+
+
+        }
+
+
     }
 	
 	public void Play (AudioClip clip) {

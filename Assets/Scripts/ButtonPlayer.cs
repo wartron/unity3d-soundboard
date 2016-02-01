@@ -8,14 +8,23 @@ public class ButtonPlayer : MonoBehaviour {
 
     public string label;
 
+    Text txt;
 
     void Awake()
     {
-        Text txt = GetComponentInChildren<Text>();
+        txt = GetComponentInChildren<Text>();
 
         txt.text = label;
     }
 
+    public void setClip(AudioClip clip, string label)
+    {
+        this.clip = clip;
+
+
+        txt.text = this.label = label;
+
+    }
 
 	public void Play ()
     {
