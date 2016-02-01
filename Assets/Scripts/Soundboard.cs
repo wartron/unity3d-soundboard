@@ -21,11 +21,20 @@ public class Soundboard : MonoBehaviour {
     public int gridCols = 3;
     public int gridRows = 4;
 
-    public GameObject mainPanel;
+    public GameObject uiMainPanel;
+    public GameObject uiBtnNext;
+    public GameObject uiBtnPrev;
+
+
+
     public GameObject prefabRow;
     public GameObject prefabPlayBtn;
     public GameObject prefabSpacer;
 
+
+    private int _page = 0;
+    private int _pageOffset = 0;
+    
 
 	void Start () {
         instance = this;
@@ -35,14 +44,20 @@ public class Soundboard : MonoBehaviour {
     {
         _audio = GetComponent<AudioSource>();
 
+        RenderButtons();
+        
+    }
 
-        int clipIndex = 0;
+    void RenderButtons()
+    {
+
+        int clipIndex = _pageOffset;
 
         for (int row = 0; row < gridRows; row++)
         {
             //init new vert layout panel
             GameObject panelRow = Instantiate(prefabRow);
-            panelRow.transform.SetParent(mainPanel.transform,false);
+            panelRow.transform.SetParent(uiMainPanel.transform, false);
 
             for (int col = 0; col < gridCols; col++)
             {
@@ -73,8 +88,15 @@ public class Soundboard : MonoBehaviour {
 
 
         }
+    }
 
-
+    void ClearButtons()
+    {
+        //remove all children
+        foreach (Transform row in uiMainPanel.transform)
+        {
+            Destroy(row.gameObject);
+        }
     }
 	
 	public void Play (AudioClip clip) {
@@ -87,5 +109,26 @@ public class Soundboard : MonoBehaviour {
         Debug.Log("Pitch val " + val);
 
         _audio.pitch = val;
+    }
+
+    public void UiBtnNextClick()
+    {
+        ClearButtons();
+        _page = _page + 1;
+        _pageOffset = _page * (gridCols * gridRows);
+        RenderButtons();
+    }
+    public void UiBtnPrevClick()
+    {
+        if (_page == 0)
+            return;
+
+        ClearButtons();
+        _page = _page - 1;
+        _pageOffset = _page * (gridCols * gridRows);
+
+  
+
+        RenderButtons();
     }
 }
