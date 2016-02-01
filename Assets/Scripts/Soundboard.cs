@@ -24,6 +24,7 @@ public class Soundboard : MonoBehaviour {
     public GameObject mainPanel;
     public GameObject prefabRow;
     public GameObject prefabPlayBtn;
+    public GameObject prefabSpacer;
 
 
 	void Start () {
@@ -47,17 +48,27 @@ public class Soundboard : MonoBehaviour {
             {
                 //init new button in panel
 
-                Debug.Log(string.Format("btn {0}x{1}", col, row));
 
-                GameObject playBtn = Instantiate(prefabPlayBtn);
-                playBtn.transform.SetParent(panelRow.transform, false);
+                if (clipIndex < items.Length)
+                {
+                    Debug.Log(string.Format("btn {0}x{1}", col, row));
 
-                AudioClip clip = items[clipIndex];
+                    GameObject playBtn = Instantiate(prefabPlayBtn);
+                    playBtn.transform.SetParent(panelRow.transform, false);
 
-                playBtn.GetComponent<ButtonPlayer>().setClip(clip,clip.name);
+                    AudioClip clip = items[clipIndex];
+
+                    playBtn.GetComponent<ButtonPlayer>().setClip(clip, clip.name);
 
 
-                clipIndex++;
+                    clipIndex++;
+                }
+                else
+                {
+                    GameObject panelSpacer = Instantiate(prefabSpacer);
+                    panelSpacer.transform.SetParent(panelRow.transform, false);
+                }
+
             }
 
 
