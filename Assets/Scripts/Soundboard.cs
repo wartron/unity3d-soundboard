@@ -8,6 +8,16 @@ public class Soundboard : MonoBehaviour {
 
     private AudioSource _audio;
 
+
+    [System.Serializable]
+    public class AudioItem{
+        public AudioClip clip;
+        public string label;
+    }
+
+    public AudioClip[] items;
+
+
 	void Start () {
         instance = this;
 	}
@@ -21,4 +31,11 @@ public class Soundboard : MonoBehaviour {
         _audio.clip = clip;
         _audio.Play();
 	}
+
+    public void PitchSliderChange(float val)
+    {
+        Debug.Log("Pitch val " + val);
+
+        _audio.pitch = val;
+    }
 }
